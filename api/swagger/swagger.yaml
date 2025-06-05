@@ -1,0 +1,86 @@
+definitions:
+  domain.Instruction:
+    properties:
+      left: {}
+      op:
+        $ref: '#/definitions/domain.Operation'
+      right: {}
+      type:
+        $ref: '#/definitions/domain.InstructionType'
+      var:
+        type: string
+    type: object
+  domain.InstructionType:
+    enum:
+    - calc
+    - print
+    type: string
+    x-enum-varnames:
+    - CalcInstruction
+    - PrintInstruction
+  domain.Operation:
+    enum:
+    - +
+    - '-'
+    - '*'
+    type: string
+    x-enum-varnames:
+    - Add
+    - Sub
+    - Mul
+  domain.ResultItem:
+    properties:
+      value:
+        type: integer
+      var:
+        type: string
+    type: object
+  http.ErrorResponse:
+    properties:
+      error:
+        example: ошибка
+        type: string
+    type: object
+  http.Response:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/domain.ResultItem'
+        type: array
+    type: object
+info:
+  contact: {}
+paths:
+  /calculate:
+    post:
+      consumes:
+      - application/json
+      description: Принимает список инструкций и возвращает результаты вычислений
+      parameters:
+      - description: Список инструкций для выполнения
+        in: body
+        name: instructions
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/domain.Instruction'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ с результатами
+          schema:
+            $ref: '#/definitions/http.Response'
+        "400":
+          description: Ошибка в формате запроса
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Выполнить вычисления
+      tags:
+      - Калькулятор
+swagger: "2.0"

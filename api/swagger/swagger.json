@@ -1,0 +1,130 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/calculate": {
+            "post": {
+                "description": "Принимает список инструкций и возвращает результаты вычислений",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Калькулятор"
+                ],
+                "summary": "Выполнить вычисления",
+                "parameters": [
+                    {
+                        "description": "Список инструкций для выполнения",
+                        "name": "instructions",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Instruction"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ с результатами",
+                        "schema": {
+                            "$ref": "#/definitions/http.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка в формате запроса",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "domain.Instruction": {
+            "type": "object",
+            "properties": {
+                "left": {},
+                "op": {
+                    "$ref": "#/definitions/domain.Operation"
+                },
+                "right": {},
+                "type": {
+                    "$ref": "#/definitions/domain.InstructionType"
+                },
+                "var": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.InstructionType": {
+            "type": "string",
+            "enum": [
+                "calc",
+                "print"
+            ],
+            "x-enum-varnames": [
+                "CalcInstruction",
+                "PrintInstruction"
+            ]
+        },
+        "domain.Operation": {
+            "type": "string",
+            "enum": [
+                "+",
+                "-",
+                "*"
+            ],
+            "x-enum-varnames": [
+                "Add",
+                "Sub",
+                "Mul"
+            ]
+        },
+        "domain.ResultItem": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "integer"
+                },
+                "var": {
+                    "type": "string"
+                }
+            }
+        },
+        "http.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "ошибка"
+                }
+            }
+        },
+        "http.Response": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.ResultItem"
+                    }
+                }
+            }
+        }
+    }
+}
