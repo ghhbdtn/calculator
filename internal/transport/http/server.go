@@ -2,7 +2,6 @@ package http
 
 import (
 	"context"
-	"embed"
 	"log"
 	"net/http"
 	"time"
@@ -11,9 +10,6 @@ import (
 	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
-
-//go:embed *
-var FS embed.FS
 
 type Server struct {
 	router     *mux.Router
