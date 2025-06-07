@@ -1,7 +1,5 @@
 package domain
 
-import "sync"
-
 type Node struct {
 	VarName   string
 	Left      *Node
@@ -10,7 +8,6 @@ type Node struct {
 	Value     int64
 	IsLiteral bool
 	Ready     chan struct{}
-	mu        sync.Mutex
 }
 
 func NewLiteralNode(value int64) *Node {
