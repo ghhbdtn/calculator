@@ -21,7 +21,7 @@ FROM alpine:latest
 WORKDIR /app
 
 COPY --from=builder /app/calculator .
-COPY --from=builder /app/docs ./api/swagger
+COPY --from=builder /app/docs ./docs
 
 EXPOSE 8080
 EXPOSE 50051

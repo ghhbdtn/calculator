@@ -28,7 +28,7 @@ func (s *EvaluationStrategy) Execute(node *domain.Node) (interface{}, error) {
 	case domain.Mul:
 		result = node.Left.Value * node.Right.Value
 	default:
-		return nil, errors.New("unknown operation")
+		return nil, domain.ErrInvalidOperation
 	}
 
 	node.Value = result

@@ -30,6 +30,12 @@
 go run cmd/server/main.go
 ```
 
+или через Docker
+
+```bash
+docker compose up
+```
+
 Сервис запустит:
 - HTTP сервер на порту 8080
 - gRPC сервер на порту 50051

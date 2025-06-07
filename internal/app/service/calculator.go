@@ -65,6 +65,8 @@ func (c *Calculator) createOperand(input interface{}) (*domain.Node, error) {
 	switch v := input.(type) {
 	case float64:
 		return domain.NewLiteralNode(int64(v)), nil
+	case int64:
+		return domain.NewLiteralNode(v), nil
 	case string:
 		if node, exists := c.variables[v]; exists {
 			return node, nil

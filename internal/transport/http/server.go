@@ -9,6 +9,7 @@ import (
 
 	"calculator/internal/app/service"
 	"github.com/gorilla/mux"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 //go:embed *
@@ -34,16 +35,14 @@ func NewServer(calculator *service.Calculator) *Server {
 }
 
 func (s *Server) registerSwaggerRoutes() {
-	// Swagger UI
-	s.router.PathPrefix("/swagger/").Handler(http.StripPrefix("/swagger/",
-		http.FileServer(http.FS(FS))))
+	swaggerHandler := httpSwagger.Handler(
+		httpSwagger.URL("/swagger/doc.json"), // URL к документации
+		httpSwagger.DocExpansion("none"),
+		httpSwagger.DomID("swagger-ui"),
+	)
 
-	// Swagger JSON
-	s.router.HandleFunc("/swagger.json", func(w http.ResponseWriter, r *http.Request) {
-		file, _ := FS.ReadFile("swagger.json")
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(file)
-	})
+	// Маршрут для Swagger UI
+	s.router.PathPrefix("/swagger/").Handler(swaggerHandler)
 }
 
 func (s *Server) Start(addr string) error {

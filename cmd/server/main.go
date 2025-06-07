@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "calculator/docs"
 	"context"
 	"log"
 	"net/http"
@@ -17,11 +18,9 @@ import (
 )
 
 func main() {
-	// Инициализация зависимостей
 	evalStrategy := &strategy.EvaluationStrategy{}
 	calculator := service.NewCalculator(evalStrategy)
 
-	// Создаем контекст для graceful shutdown
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
